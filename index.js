@@ -88,6 +88,8 @@ async function start() {
             return viewRoles();
         case "VIEW_EMPLOYEES":
             return viewEmployees();
+        case "ADD_DEPARTMENT":
+            return addingDepartment();
         default:
             break;
     }
@@ -112,5 +114,28 @@ async function viewRoles() {
     const roles = await db.findAllRoles();
 
     console.table(roles);
+    start();
+}
+
+async function addingDepartment() {
+    const department = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'dept_name',
+            message: 'Please enter the name of new department: (Required)',
+            validate: deptInput => {
+                if(deptInput) {
+                    return true;
+                } else {
+                    console.log('Please enter the name of new department!');
+                    return false;
+                }
+            }
+        }
+    ]);
+
+    const new_department = await db.addDepartment(department.dept_name);
+
+    console.log(new_department);
     start();
 }
