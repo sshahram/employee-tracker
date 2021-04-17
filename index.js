@@ -49,11 +49,32 @@ async function start() {
             message: "What would you like to do?",
             choices:[
                 {
-                    name:"Veiw All Employees",
+                    name: "View All Departments",
+                    value: "VIEW_DEPARTMENTS"
+                },
+                {
+                    name: "View All roles",
+                    value: "VIEW_ROLES"
+                },
+                {
+                    name:"View All Employees",
                     value:"VIEW_EMPLOYEES"
                 },
                 {
-                    
+                    name: "Add a Department",
+                    value: "ADD_DEPARTMENT"
+                },
+                {
+                    name: "Add a Role",
+                    value: "ADD_ROLE"
+                },
+                {
+                    name: "Add an Employee",
+                    value: "ADD_EMPLOYEE"
+                },
+                {
+                    name: "Update an Employee Role",
+                    value: "UPDATE_EMPLOYEE"
                 }
             ]
         }
@@ -61,12 +82,14 @@ async function start() {
 
 
     switch (choice) {
+        case "VIEW_DEPARTMENTS":
+            return viewDepartments();
         case "VIEW_EMPLOYEES":
             return viewEmployees();
         default:
             break;
     }
-}
+};
 
 async function viewEmployees() {
     const employees = await db.findAllEmployees();
@@ -74,4 +97,11 @@ async function viewEmployees() {
     console.table(employees);
 
     start();
-}
+};
+
+async function viewDepartments() {
+    const departments = await db.findAllDepartments();
+
+    console.table(departments);
+    start();
+};
