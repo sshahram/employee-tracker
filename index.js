@@ -84,6 +84,8 @@ async function start() {
     switch (choice) {
         case "VIEW_DEPARTMENTS":
             return viewDepartments();
+        case "VIEW_ROLES":
+            return viewRoles();
         case "VIEW_EMPLOYEES":
             return viewEmployees();
         default:
@@ -105,3 +107,10 @@ async function viewDepartments() {
     console.table(departments);
     start();
 };
+
+async function viewRoles() {
+    const roles = await db.findAllRoles();
+
+    console.table(roles);
+    start();
+}

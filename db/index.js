@@ -6,7 +6,11 @@ class DB {
     }
 
     findAllDepartments() {
-        return this.connection.query("SELECT * FROM department;");
+        return this.connection.query("SELECT id as department_id, name AS department_name FROM department;");
+    }
+
+    findAllRoles() {
+        return this.connection.query("SELECT title AS job_title, role.id AS role_id, department.name AS department, salary FROM role JOIN department ON role.department_id = department.id;");
     }
 
     findAllEmployees(){
