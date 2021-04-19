@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const db = require('./db');
 require("console.table");
 
+
 // // Start server after DB connection
 // db.connect(err => {
 //     if (err) throw err;
@@ -80,7 +81,6 @@ async function start() {
         }
     ]);
 
-
     switch (choice) {
         case "VIEW_DEPARTMENTS":
             return viewDepartments();
@@ -90,6 +90,8 @@ async function start() {
             return viewEmployees();
         case "ADD_DEPARTMENT":
             return addingDepartment();
+        case "ADD_ROLE":
+            return addingRole();
         default:
             break;
     }
@@ -137,5 +139,65 @@ async function addingDepartment() {
     const new_department = await db.addDepartment(department.dept_name);
 
     console.log(new_department);
+    start();
+}
+
+
+async function addingRole(){
+   const departments = await db.findAllDepartments();
+//    console.log(departments);
+//    let deptOptions = [];
+//    for(i=0; i<departments.length; i++) {
+//        const departmentName = departments[i].department_name;
+//        const departmentId = departments[i].department_id;
+//        const deptObject ={departmentId, departmentName}
+//        deptOptions.push(deptObject);
+//    }
+//    console.log(deptOptions);
+const deptOptions = departments.map(({department_id, department_name}) =>( {
+    name: department_name,
+    value: department_id
+}));
+console.log(deptOptions);
+   const role = await inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "What role would you like to add? (Required)",
+            validate: roleInput => {
+                if(roleInput) {
+                    return true;
+                } else {
+                    console.log('Please enter the role name!');
+                    return false;
+                }
+            }
+        },
+        {
+            type: "number",
+            name: "salary",
+            message: "What would be the salary for this role? (Required)",
+            validate: salaryInput => {
+                if(salaryInput) {
+                    return true;
+                } else {
+                    console.log("Please enter the salary for this role!");
+                    return false;
+                }
+            }
+        },
+        {
+            type: "list",
+            name: "department_id",
+            message: "Which department does this role belong to?",
+            choices: deptOptions
+        }
+    ])
+    
+    
+
+    const new_role = await db.addRole(role);
+
+    // console.log(new_department);
     start();
 }

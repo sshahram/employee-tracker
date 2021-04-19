@@ -18,7 +18,12 @@ class DB {
     }
 
     addDepartment(params) {
-        return this.connection.query(`INSERT INTO department (name) VALUES(?)`, params);
+        return this.connection.query(`INSERT INTO department (name) VALUES(?);`, params);
+    }
+
+    addRole(params) {
+        console.log("params",params);
+        return this.connection.query(`INSERT INTO role SET ?`, params);
     }
 }
 
