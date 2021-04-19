@@ -22,8 +22,17 @@ class DB {
     }
 
     addRole(params) {
-        console.log("params",params);
+        // console.log("params",params);
         return this.connection.query(`INSERT INTO role SET ?`, params);
+    }
+
+    addEmployee(params) {
+        // console.log("params",params);
+        return this.connection.query(`INSERT INTO employee SET ?`, params);
+    }
+
+    findManagers() {
+        return this.connection.query(`SELECT id, CONCAT(first_name, ' ',last_name) AS name from employee;`);
     }
 }
 

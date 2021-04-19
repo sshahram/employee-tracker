@@ -92,6 +92,8 @@ async function start() {
             return addingDepartment();
         case "ADD_ROLE":
             return addingRole();
+        case "ADD_EMPLOYEE":
+            return addingEmployee();
         default:
             break;
     }
@@ -193,11 +195,66 @@ console.log(deptOptions);
             choices: deptOptions
         }
     ])
-    
-    
 
     const new_role = await db.addRole(role);
 
     // console.log(new_department);
+    start();
+}
+
+async function addingEmployee() {
+    const roles = await db.findAllRoles();
+    const roleOptions = roles.map(({role_id, job_title}) =>( {
+        name: job_title,
+        value: role_id
+    }));
+
+    const managers = await db.findManagers();
+    const managerOptions = managers.map(({id, name}) =>( {
+        name: name,
+        value: id
+    }));
+
+    const employee = await inquirer.prompt([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the first name of the new employee?",
+            validate: firstNameInput => {
+                if(firstNameInput) {
+                    return true;
+                } else {
+                    console.log('Please enter the first name of new employee!');
+                    return false;
+                }
+            }
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the last name of the new employee?",
+            validate: lastNameInput => {
+                if(lastNameInput) {
+                    return true;
+                } else {
+                    console.log("Please enter the last name of new employee!");
+                }
+            }
+        },
+        {
+            type: "list",
+            name: "role_id",
+            message: "What is the role of this employee?",
+            choices: roleOptions
+        },
+        {
+            type: "list",
+            name: "manager_id",
+            message: "Who is the manager for this employee?",
+            choices: managerOptions
+        }
+    ])
+
+    const new_employee = await db.addEmployee(employee);
     start();
 }
