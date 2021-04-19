@@ -94,6 +94,8 @@ async function start() {
             return addingRole();
         case "ADD_EMPLOYEE":
             return addingEmployee();
+        case "UPDATE_EMPLOYEE":
+            return updatingEmployee();
         default:
             break;
     }
@@ -147,20 +149,12 @@ async function addingDepartment() {
 
 async function addingRole(){
    const departments = await db.findAllDepartments();
-//    console.log(departments);
-//    let deptOptions = [];
-//    for(i=0; i<departments.length; i++) {
-//        const departmentName = departments[i].department_name;
-//        const departmentId = departments[i].department_id;
-//        const deptObject ={departmentId, departmentName}
-//        deptOptions.push(deptObject);
-//    }
-//    console.log(deptOptions);
-const deptOptions = departments.map(({department_id, department_name}) =>( {
-    name: department_name,
-    value: department_id
+   const deptOptions = departments.map(({department_id, department_name}) =>( {
+   name: department_name,
+   value: department_id
 }));
-console.log(deptOptions);
+
+// console.log(deptOptions);
    const role = await inquirer.prompt([
         {
             type: "input",
@@ -256,5 +250,36 @@ async function addingEmployee() {
     ])
 
     const new_employee = await db.addEmployee(employee);
+    start();
+}
+
+async function updatingEmployee() {
+    const roles = await db.findAllRoles();
+    const roleOptions = roles.map(({role_id, job_title}) =>( {
+        name: job_title,
+        value: role_id
+    }));
+
+    const employees = await db.findManagers();
+    const employeeOptions = employees.map(({id, name}) =>( {
+        name: name,
+        value: id
+    }));
+
+    const employee = await inquirer.prompt([
+        {
+            type: "list",
+            name: "id",
+            message: "Which employee would you like to update?",
+            choices: employeeOptions
+        },
+        {
+            type: "list",
+            name: "role_id",
+            message: "What would be the new role for this employee?",
+            choices: roleOptions
+        }
+    ])
+    const update_employee = await db.updateEmployee([employee.role_id, employee.id]);
     start();
 }

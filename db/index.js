@@ -34,6 +34,10 @@ class DB {
     findManagers() {
         return this.connection.query(`SELECT id, CONCAT(first_name, ' ',last_name) AS name from employee;`);
     }
+
+    updateEmployee(params) {
+        return this.connection.query(`UPDATE employee SET role_id = ? WHERE id = ?;`, params);
+    }
 }
 
 module.exports = new DB(connection);
