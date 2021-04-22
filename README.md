@@ -24,17 +24,17 @@ git clone <from-repository-on-github>
 npm install
 node index.js
 ```
-Before running "node index.js" command inn your terminal, please make sure to update connection.js file with your mysql username and password.
+Before running "node index.js" command in your terminal, please make sure to update "connection.js" file with your mysql "username" and "password".
 
 ## License
 Please see the following link for license information: 
 [GitHub-license](./utils/license-MIT.txt)
 
 ## Contributing
-Please first submit a new issue for the change you want to make in this repository on GitHub. Then, git clone the repo and do the changes locally on your machine. When you are done with your changes, create a pull request on the GitHub repository.
+Please first submit a new "issue" for the change you want to make in this repository on GitHub. Then, "git clone" the repo and do the changes locally on your machine. When you are done with your changes, create a pull request on the GitHub repository.
 
 ## Tests
-Run the following command "node index.js" multiple time in your terminal. Each time select a different option and follow the prompts.
+Run the following command "node index.js" multiple times in your terminal. Each time select a different option and follow the prompts.
 
 ## Demo
 Please click on the following link to see the Demo video for this project:

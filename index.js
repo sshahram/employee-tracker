@@ -41,6 +41,10 @@ async function start() {
                 {
                     name: "Update an Employee Role",
                     value: "UPDATE_EMPLOYEE"
+                },
+                {
+                    name: "Exit",
+                    value: "Exit"
                 }
             ]
         }
@@ -61,6 +65,8 @@ async function start() {
             return addingEmployee();
         case "UPDATE_EMPLOYEE":
             return updatingEmployee();
+        case "Exit":
+            return end();
         default:
             break;
     }
@@ -257,3 +263,9 @@ async function updatingEmployee() {
     const update_employee = await db.updateEmployee([employee.role_id, employee.id]);
     start();
 }
+
+// exit the menu
+function end() {
+    console.log("Thank you, Bye!");
+    process.exit();
+  }
