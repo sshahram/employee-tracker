@@ -117,7 +117,7 @@ async function addingDepartment() {
 
     const new_department = await db.addDepartment(department.dept_name);
 
-    console.log(new_department);
+    // console.log(new_department);
     start();
 }
 
