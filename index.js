@@ -184,7 +184,7 @@ async function addingEmployee() {
         {
             type: "input",
             name: "first_name",
-            message: "What is the first name of the new employee?",
+            message: "What is the first name of the new employee? (Required)",
             validate: firstNameInput => {
                 if(firstNameInput) {
                     return true;
@@ -197,7 +197,7 @@ async function addingEmployee() {
         {
             type: "input",
             name: "last_name",
-            message: "What is the last name of the new employee?",
+            message: "What is the last name of the new employee? (Required)",
             validate: lastNameInput => {
                 if(lastNameInput) {
                     return true;
