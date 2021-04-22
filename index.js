@@ -1,47 +1,12 @@
+// dependencies
 const inquirer = require('inquirer');
 const db = require('./db');
 require("console.table");
 
-
-// // Start server after DB connection
-// db.connect(err => {
-//     if (err) throw err;
-//     console.log('Database connected.');
-//     app.listen(PORT, () => {
-//       console.log(`Server running on port ${PORT}`);
-//     });
-//   });
-
-
-  // Questions
-// const prompotuser =() => {
-//     return inquirer.prompt([
-//         {
-//             type: 'list',
-//             name: 'option',
-//             message:'What would you like to do?',
-//             choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee role']
-//         },
-//         {
-//             type: 'input',
-//             name: 'department',
-//             message: 'What is the name of the deparment? (Required)',
-//             validate: departmentName => {
-//                 if(departmentName) {
-//                     return true;
-//                 } else {
-//                     console.log('Please enter the name of the department!');
-//                     return false;
-//                 }
-//             },
-//         }
-//     ])
-// };
-
-// prompotuser();
-
+// function to start the application
 start();
 
+// Main menu options
 async function start() {
     const {choice} = await inquirer.prompt([
         {
@@ -101,6 +66,7 @@ async function start() {
     }
 };
 
+// Option: View All Employees
 async function viewEmployees() {
     const employees = await db.findAllEmployees();
 
@@ -109,6 +75,7 @@ async function viewEmployees() {
     start();
 };
 
+// Option: View All Departments
 async function viewDepartments() {
     const departments = await db.findAllDepartments();
 
@@ -116,6 +83,7 @@ async function viewDepartments() {
     start();
 };
 
+// Option: View All roles
 async function viewRoles() {
     const roles = await db.findAllRoles();
 
@@ -123,6 +91,7 @@ async function viewRoles() {
     start();
 }
 
+// Option: Add a department
 async function addingDepartment() {
     const department = await inquirer.prompt([
         {
@@ -146,7 +115,7 @@ async function addingDepartment() {
     start();
 }
 
-
+// Option: Add a role
 async function addingRole(){
    const departments = await db.findAllDepartments();
    const deptOptions = departments.map(({department_id, department_name}) =>( {
@@ -196,6 +165,7 @@ async function addingRole(){
     start();
 }
 
+// Option: Add an Employee
 async function addingEmployee() {
     const roles = await db.findAllRoles();
     const roleOptions = roles.map(({role_id, job_title}) =>( {
@@ -208,6 +178,7 @@ async function addingEmployee() {
         name: name,
         value: id
     }));
+    managerOptions.unshift('None');
 
     const employee = await inquirer.prompt([
         {
@@ -248,11 +219,14 @@ async function addingEmployee() {
             choices: managerOptions
         }
     ])
-
+    if (employee.manager_id === 'None') {
+        employee.manager_id = null;
+    }
     const new_employee = await db.addEmployee(employee);
     start();
 }
 
+// Option: Update an Employee role
 async function updatingEmployee() {
     const roles = await db.findAllRoles();
     const roleOptions = roles.map(({role_id, job_title}) =>( {
